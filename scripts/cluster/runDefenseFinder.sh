@@ -25,7 +25,8 @@ name=$(sed -n "${SLURM_ARRAY_TASK_ID}p" prodigal_samples.txt)
 
 hostname
 # Activate conda environment
-source activate defensefinder-2.0.1
+. ~/initMamba.sh
+conda activate defensefinder
 
 OUT_TMP=/tmp/defense_finder_tmp_${SLURM_ARRAY_TASK_ID}
 OUT_FINAL=/user/home/XXXX/trieste/prodigal-meta-defense-finder-outputs
@@ -45,7 +46,7 @@ fi
 
 cp prodigal/"$name" $OUT_TMP
 cd $OUT_TMP
-defense-finder run -a "$name" --workers ${SLURM_CPUS_PER_TASK} -o $OUT_TMP
+defense-finder run -a "$name" --workers ${SLURM_CPUS_PER_TASK} -o $OUT_TMP  --skip-model-version-check
 #rsync -av --remove-source-files "${OUT_TMP}/*.tsv" "${OUT_FINAL}/"
 # Copy the annotations and the defensefinder systems
 cp ${OUT_TMP}/* "${OUT_FINAL}/"

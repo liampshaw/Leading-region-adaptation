@@ -20,3 +20,4 @@ ggplot(d[which(d$start<50000),],
   ylab("Number of palindromes per 5kb")+
   theme_bw()
 dev.off()
+
