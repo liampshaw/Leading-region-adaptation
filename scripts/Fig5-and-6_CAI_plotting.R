@@ -30,7 +30,6 @@ cai$HostSpecies = plasmid_table[cai$plasmid, "Species"]
 mob.types = read.csv('../data/PTU-mob-types.csv', header=T)
 
 
-
 cai.ptu = cai %>% group_by(PTU, position) %>%
   summarise(mean.cai=mean(cai))
 # Add a length threshold for each PTU
@@ -205,9 +204,6 @@ cai.ptu.ecoli.both = cai.ptu.ecoli.both %>%
 cai.ptu.ecoli.both.constrained = cai.ptu.ecoli.both %>%
   filter(position <= percentile/2 & position >= -percentile/2)
 
-ggplot(cai.ptu.ecoli.both.constrained, aes(position, mean.cai))+
-  geom_point(size=0.5)+
-  facet_wrap(~PTU, scales="free_x")
 
 
 ## FIGURE 7
@@ -264,9 +260,12 @@ conj.hits = read.csv('/Users/Liam/Downloads/new_1751/prodigal-output-meta/all_re
 # keep those with e-value <1e-10
 conj.hits.e10 = conj.hits[which(conj.hits$evalue<1e-10),]
 conj.hits.e10$id = conj.hits.e10$target
-conj.hits.e10$type = "CONJScan"
 conj.hits.e10$subtype = conj.hits.e10$query
 conj.hits.e10$activity = "CONJScan"
+conj.hits.e10$tra = grepl("tra", conj.hits.e10$query)
+conj.hits.e10$type = ifelse(conj.hits.e10$tra, "CONJScan tra gene",
+                            "CONJScan other")
+
 
 # Combine defensefinder and Conj hits
 info.to.add = rbind(defensefinder.expanded[,c("id", "type", "subtype", "activity")],
@@ -293,7 +292,8 @@ cai.combined$type.for.plot[which(cai.combined$activity=="Other")] = "Unknown"
 
 # Order
 cai.combined$type.for.plot = ordered(cai.combined$type.for.plot, 
-                                     levels=c("Anti_CRISPR", "Anti_RM", "psiAB", "RM", "CBASS", "Other defense", "Unknown"))
+                                     levels=c("Anti_CRISPR", "Anti_RM", "psiAB", "RM", "CBASS", "Other defense", "CONJScan tra gene",
+                                              "CONJScan other", "Unknown"))
 # Drop the anti-Pycsar
 cai.combined = cai.combined[which(cai.combined$id!="NZ_CP023144.1_94"),]
 # Compute medians
@@ -309,7 +309,7 @@ ecoli.optimal.set.of.genes$activity = " Highly expressed\nchromosomal genes"
 ecoli.optimal.set.of.genes$type.for.plot = "Unknown"
 p.fig.7.antidefense.types = ggplot(cai.combined, aes(activity, group=type.for.plot, cai, fill=type.for.plot))+
   geom_boxplot(position=pd)+
-  scale_fill_manual(values=c("#fecc5c","#fd8d3c","#e31a1c", "#ece2f0", "#1c9099", "#a6bddb",  "grey"))+
+  scale_fill_manual(values=c("#fecc5c","#fd8d3c","#e31a1c", "#ece2f0", "#1c9099", "#a6bddb", "purple", "pink",  "grey"))+
   theme_bw()+
   geom_text(data = medians,
             aes( y=median_cai+0.013, label = round(median_cai, 2)),
@@ -322,3 +322,4 @@ p.fig.7.antidefense.types = ggplot(cai.combined, aes(activity, group=type.for.pl
   labs(fill="Category")
 ggsave(p.fig.7.antidefense.types, file='../figures/Fig7/figure-7-2026-gene-types.pdf', 
        width=6, height=4)
+
