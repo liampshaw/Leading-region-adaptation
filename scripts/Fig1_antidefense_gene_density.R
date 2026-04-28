@@ -68,7 +68,11 @@ ggsave(p.facet.MOBH, file="../figures/Fig1/fig-facet-antidefense-MOBH.pdf", widt
 ggsave(p.facet.MOBFandH, file="../figures/Fig1/fig-facet-antidefense-MOBFandH.pdf", width=6, height=4) # to get ratio right
 
 ggsave(p.facet.MOBP, file="../figures/Fig1/fig-facet-antidefense-MOBP.pdf", width=6, height=4)
-# These are then combined and edited in fig-facet-antidefense-PTU.svg
+# These are then combined and edited to make figure
+
+
+
+
 
 # For each PTU, calculate the proportion of its plasmids 
 # which carry an anti-defense system
@@ -96,3 +100,42 @@ p.genus.props = ggplot(PTU.by.genus, aes(PTU, prop, fill=Genus.simple))+
   theme(panel.grid = element_blank())+
   coord_flip()
 ggsave(p.genus.props, file='../figures/Fig1/fig-prop-genus-counts.pdf', width=4, height=4)
+
+
+# Redo for all HMM hits evalue <1e-10 - just to check results are similar
+# Read in defensefinder results
+defensefinder = read.csv('../data/defensefinder_results/all_hmmer.tsv',
+                         header=T,
+                         sep='\t')
+defensefinder = defensefinder[which(defensefinder$i_eval<1e-10),]
+defensefinder$plasmid = sub("_[0-9]+$", "", defensefinder$hit_id)
+defensefinder$position = as.numeric(gsub(".*_", "", defensefinder$hit_id))
+# Add PTU
+defensefinder$PTU = plasmid_table[defensefinder$plasmid, "PTU"]
+
+# Read in genes, store which are defense/antidefense
+df_genes= read.csv('../data/defensefinder_results/all_genes.tsv',
+                   header=T,
+                   sep='\t')
+gene_names_antidefense = unique(df_genes$hit_gene_ref[which(df_genes$activity=="Antidefense")])
+gene_names_defense = unique(df_genes$hit_gene_ref[which(df_genes$activity=="Defense")])
+
+antidefense = defensefinder[which(defensefinder$gene_name %in% gene_names_antidefense),]
+gene_names_antiRM = unique(df_genes$hit_gene_ref[which(df_genes$type=="Anti_RM")])
+gene_names_antiCRISPR = unique(df_genes$hit_gene_ref[which(df_genes$type=="Anti_CRISPR")])
+gene_names_psiAB = unique(df_genes$hit_gene_ref[which(df_genes$type=="Other")])
+
+antidefense$type = sapply(antidefense$gene_name, 
+                          function(x) ifelse(x %in% gene_names_antiRM, "Anti_RM",
+                                             ifelse(x %in% gene_names_antiCRISPR, "Anti_CRISPR", 
+                                                    ifelse(x %in% gene_names_psiAB, "psiAB", "Anti_Pycsar"))))
+# Exclude anti-pycsar for plotting
+antidefense.plot = antidefense[which(antidefense$type!="Anti_Pycsar"),]
+
+p.all = ggplot(antidefense.plot, aes(position, fill=type))+
+  geom_histogram()+theme_bw()+
+  xlab("Start of system (ORF position)")+
+  ylab("Frequency")+
+  theme(legend.position = c(0.8, 0.8),
+        legend.background = element_rect(colour="black"))+
+  scale_fill_manual(values=c("#fecc5c","#fd8d3c","#e31a1c"))
