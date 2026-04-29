@@ -9,7 +9,7 @@ plasmid_table = read.csv('../data/TableS1_plasmid_metadata.csv', header=T,
 plasmid_table = plasmid_table[plasmid_table$Leading.region.analysis==TRUE,]
 
 # Read in defensefinder results
-defensefinder = read.csv('../data/TableSX_defensefinder_results_prodigal_meta.tsv',
+defensefinder = read.csv('../data/zenodo/defensefinder_results/all_systems.tsv',
                          header=T,
                          sep='\t')
 defensefinder$plasmid = sub("_[0-9]+$", "", defensefinder$sys_beg)

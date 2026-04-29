@@ -9,18 +9,18 @@ dir.create("../figures/Fig6/", showWarnings = FALSE, recursive = TRUE)
 
 
 # Read in eggnog mapper data
-eggnog = read.csv('../data/eggnog_results/eggnog_results_all.emapper.annotations',
+eggnog = read.csv('../data/zenodo/eggnog_results/eggnog_results_all.emapper.annotations',
                   header=T, sep='\t')
 eggnog$id = eggnog$query
 sort(table(eggnog$COG_category))
 
 # Read in AMR data
-amr = read.csv('../data/amrfinder-output.tsv', header=T, sep='\t')
+amr = read.csv('../data/zenodo/amrfinder-output.tsv', header=T, sep='\t')
 amr$id = amr$Protein.id
 amr_proteins = amr$id
 
 # Defense/antidefense
-defensefinder = read.csv('../data/defensefinder_results/all_genes.tsv',
+defensefinder = read.csv('../data/zenodo/defensefinder_results/all_genes.tsv',
                          header=T,
                          sep='\t')
 antidefense = defensefinder[which(defensefinder$activity=="Antidefense"),]
@@ -48,11 +48,12 @@ eggnog_annotated <- eggnog %>%
   )
 
 # Read in CAI data
-cai = read.csv('../data/cai_prodigal_meta.tsv',
+cai = read.csv('../data/zenodo/cai_results_prodigal_meta.tsv',
                header=T,
                sep='\t')
 cai$id = gsub(".*\\|", "", cai$gene_id)
-cai$plasmid = gsub("\\.fna.*", "", gsub(".*\\/", "", cai$gene_id))
+cai$plasmid = sapply(cai$id, 
+                     function(x) paste(head(strsplit(x, "_")[[1]], 2), collapse = "_"))
 cai$position = as.numeric(gsub(".*_", "", cai$gene_id))
 plasmid_table = read.csv('../data/TableS1_plasmid_metadata.csv', header=T,
                          row.names = 1)

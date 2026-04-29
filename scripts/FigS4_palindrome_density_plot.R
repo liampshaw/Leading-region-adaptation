@@ -8,7 +8,7 @@ plasmid_table = read.csv('../data/TableS1_plasmid_metadata.csv', header=T,
                          row.names = 1)
 plasmid_table = plasmid_table[plasmid_table$Leading.region.analysis==TRUE,]
 
-d = read.csv('../data/palindrome_density.tsv', header=T, sep='\t')
+d = read.csv('../data/zenodo/palindrome_density.tsv', header=T, sep='\t')
 d$PTU = plasmid_table[d$contig,"PTU"]
 
 d$start.factor.kb = as.factor(d$start/1000)

@@ -14,7 +14,7 @@ plasmid_table = read.csv('../data/TableS1_plasmid_metadata.csv', header=T,
 plasmid_table = plasmid_table[plasmid_table$Leading.region.analysis==TRUE,]
 
 # GC content
-gc = fread("../data/avg_gc.tsv",
+gc = fread("../data/zenodo/seq_stats/avg_gc.tsv",
            col.names = c("plasmid_long", "position", "gc"))
 gc$plasmid = gsub("_leading.fa", "", gc$plasmid_long)
 gc$PTU = plasmid_table[gc$plasmid, "PTU"]

@@ -19,7 +19,7 @@ theoreticalPalindromeExpectation = function(p, k){# p is GC content, k is k-mer 
 }
 
 # GC content
-gc = fread("../data/seq_stats/avg_gc.tsv",
+gc = fread("../data/zenodo/seq_stats/avg_gc.tsv",
            col.names = c("plasmid_long", "position", "gc"))
 gc$plasmid = gsub("_leading.fa", "", gc$plasmid_long)
 gc$PTU = plasmid_table[gc$plasmid, "PTU"]
@@ -100,12 +100,12 @@ makeDepletionPlot = function(input_file, output_plot_filename, k){
 }
 
 # Make figures for  k=6 (used in Fig 3) and also k=4 (Fig S1) and k=8 (Fig S2)
-makeDepletionPlot("../data/seq_stats/avg_4_step1000_window1000.tsv", 
+makeDepletionPlot("../data/zenodo/seq_stats/avg_4_step1000_window1000.tsv", 
                   "../figures/Fig3/figS1-palindrome-depletion-k4.pdf",
                   4)
-makeDepletionPlot("../data/seq_stats/avg_6_step1000_window1000.tsv", 
+makeDepletionPlot("../data/zenodo/seq_stats/avg_6_step1000_window1000.tsv", 
                   "../figures/Fig3/fig-palindrome-depletion-k6.pdf",
                   6)
-makeDepletionPlot("../data/seq_stats/avg_8_step1000_window1000.tsv", 
+makeDepletionPlot("../data/zenodo/seq_stats/avg_8_step1000_window1000.tsv", 
                   "../figures/Fig3/figS2-palindrome-depletion-k8.pdf",
                   8)

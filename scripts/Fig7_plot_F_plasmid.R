@@ -14,10 +14,10 @@ library(ggsignif)
 # Create output directory for figures
 dir.create("../figures/Fig7/", showWarnings = FALSE, recursive = TRUE)
 
-f_plasmid_genes =  read.csv('../data/F-plasmid/F-plasmid-genes-NCBI-spreadsheet.csv', 
+f_plasmid_genes =  read.csv('../data/zenodo/F-plasmid/F-plasmid-genes-NCBI-spreadsheet.csv', 
                           header=T)
 # Add features
-f_plasmid_features = read.csv('../data/F-plasmid/F-plasmid-features.csv',
+f_plasmid_features = read.csv('../data/zenodo/F-plasmid/F-plasmid-features.csv',
                               header=T)
 
 # Plot the whole thig

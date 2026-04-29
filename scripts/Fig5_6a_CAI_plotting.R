@@ -5,14 +5,14 @@ library(cowplot)
 
 # Create output directory for figures
 dir.create("../figures/Fig5/", showWarnings = FALSE, recursive = TRUE)
-dir.create("../figures/Fig7/", showWarnings = FALSE, recursive = TRUE)
+dir.create("../figures/Fig6/", showWarnings = FALSE, recursive = TRUE)
 dir.create("../figures/Supp/", showWarnings = FALSE, recursive = TRUE)
 
 # Read in CAI data
-cai = read.csv('../data/cai_prodigal_meta.tsv',
+cai = read.csv('../data/zenodo/cai_results_prodigal_meta.tsv',
                header=T,
                sep='\t')
-defensefinder = read.csv('../data/TableSX_defensefinder_results_prodigal_meta.tsv',
+defensefinder = read.csv('../data/zenodo/defensefinder_results/all_systems.tsv',
                          header=T,
                          sep='\t')
 plasmid_table = read.csv('../data/TableS1_plasmid_metadata.csv', header=T,
@@ -20,7 +20,8 @@ plasmid_table = read.csv('../data/TableS1_plasmid_metadata.csv', header=T,
 plasmid_table = plasmid_table[plasmid_table$Leading.region.analysis==TRUE,]
 
 cai$id = gsub(".*\\|", "", cai$gene_id)
-cai$plasmid = gsub("\\.fna.*", "", gsub(".*\\/", "", cai$gene_id))
+cai$plasmid = sapply(cai$id, 
+                     function(x) paste(head(strsplit(x, "_")[[1]], 2), collapse = "_"))
 cai$position = as.numeric(gsub(".*_", "", cai$gene_id))
 cai$PTU = plasmid_table[cai$plasmid, "PTU"]
 cai$HostGenus = plasmid_table[cai$plasmid, "Genus"]
@@ -206,7 +207,7 @@ cai.ptu.ecoli.both.constrained = cai.ptu.ecoli.both %>%
 
 
 
-## FIGURE 7
+## FIGURE 6a
 # Analysing defensefinder results
 antidefense = defensefinder[which(defensefinder$activity=="Antidefense"),]
 defense = defensefinder[which(defensefinder$activity=="Defense"),]
@@ -256,7 +257,7 @@ defensefinder.expanded = defensefinder %>%
   separate_rows(protein_in_syst, sep = ",") 
 defensefinder.expanded$id = defensefinder.expanded$protein_in_syst # map the IDs
 # Add in tra genes (from hmmsearch against CONJScan hmms from MacSyfinder)
-conj.hits = read.csv('/Users/Liam/Downloads/new_1751/prodigal-output-meta/all_results.tsv', sep='\t', header=T)
+conj.hits = read.csv('../data/zenodo/conjscan_results.tsv', sep='\t', header=T)
 # keep those with e-value <1e-10
 conj.hits.e10 = conj.hits[which(conj.hits$evalue<1e-10),]
 conj.hits.e10$id = conj.hits.e10$target
@@ -307,7 +308,7 @@ ecoli.optimal.set.of.genes = read.csv('../data/Ecoli-K12-optimal-weights.txt', h
 colnames(ecoli.optimal.set.of.genes) = "cai"
 ecoli.optimal.set.of.genes$activity = " Highly expressed\nchromosomal genes"
 ecoli.optimal.set.of.genes$type.for.plot = "Unknown"
-p.fig.7.antidefense.types = ggplot(cai.combined, aes(activity, group=type.for.plot, cai, fill=type.for.plot))+
+p.fig.6a.antidefense.types = ggplot(cai.combined, aes(activity, group=type.for.plot, cai, fill=type.for.plot))+
   geom_boxplot(position=pd)+
   scale_fill_manual(values=c("#fecc5c","#fd8d3c","#e31a1c", "#ece2f0", "#1c9099", "#a6bddb", "purple", "pink",  "grey"))+
   theme_bw()+
@@ -320,6 +321,6 @@ p.fig.7.antidefense.types = ggplot(cai.combined, aes(activity, group=type.for.pl
   ylab("CAI")+
   xlab("")+
   labs(fill="Category")
-ggsave(p.fig.7.antidefense.types, file='../figures/Fig7/figure-7-2026-gene-types.pdf', 
+ggsave(p.fig.6a.antidefense.types, file='../figures/Fig6/figure6a-2026-gene-types.pdf', 
        width=6, height=4)
 

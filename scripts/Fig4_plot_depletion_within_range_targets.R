@@ -17,7 +17,7 @@ mob.types = read.csv('../data/PTU-mob-types.csv',
 scores_average_all = NULL
 for (PTU in unique(plasmid_table$PTU)){
   for (k in c(5,6)){
-    scores_df = read.csv(paste0('../data/targets_leading_lagging/', PTU, '_k', k, '_scores.csv'), header=T)
+    scores_df = read.csv(paste0('../data/zenodo/targets_leading_lagging/', PTU, '_k', k, '_scores.csv'), header=T)
     n_targets = nrow(scores_df)
     scores_average <- scores_df %>%
       rowwise() %>%
@@ -25,7 +25,7 @@ for (PTU in unique(plasmid_table$PTU)){
              sd=sd(c_across(starts_with("score")))) %>%
       ungroup() %>%
       select(kmer, score_avg, sd)
-    counts_df = read.csv(paste0('../data/targets_leading_lagging/', PTU, '_k', k, '_counts.csv'), header=T)
+    counts_df = read.csv(paste0('../data/zenodo/targets_leading_lagging//', PTU, '_k', k, '_counts.csv'), header=T)
     counts_average <- counts_df %>%
       rowwise() %>%
       mutate(count_avg = mean(c_across(starts_with("count")))) %>%
