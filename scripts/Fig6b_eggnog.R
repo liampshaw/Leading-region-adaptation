@@ -67,7 +67,10 @@ mob.types = read.csv('../data/PTU-mob-types.csv', header=T)
 
 
 cai.eggnog = merge(cai, eggnog_annotated, by="id", all.x=TRUE)
-
+# Order by plasmid, position
+cai.eggnog = cai.eggnog[order(cai.eggnog$plasmid, cai.eggnog$position, decreasing=FALSE),]
+# This is saved as 
+# write.csv(cai.eggnog, file="../data/TableS5_CAI_and_eggnog.csv", index=FALSE)
 
 
 
