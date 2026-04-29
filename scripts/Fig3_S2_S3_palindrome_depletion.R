@@ -7,6 +7,7 @@ library(ggpubfigs)
 
 # Create output directory for figures
 dir.create("../figures/Fig3/", showWarnings = FALSE, recursive = TRUE)
+dir.create("../figures/Supp/", showWarnings = FALSE, recursive = TRUE)
 
 # Plasmid table
 plasmid_table = read.csv('../data/TableS1_plasmid_metadata.csv', header=T,
@@ -101,11 +102,11 @@ makeDepletionPlot = function(input_file, output_plot_filename, k){
 
 # Make figures for  k=6 (used in Fig 3) and also k=4 (Fig S1) and k=8 (Fig S2)
 makeDepletionPlot("../data/zenodo/seq_stats/avg_4_step1000_window1000.tsv", 
-                  "../figures/Fig3/figS1-palindrome-depletion-k4.pdf",
+                  "../figures/Supp/figS2-palindrome-depletion-k4.pdf",
                   4)
 makeDepletionPlot("../data/zenodo/seq_stats/avg_6_step1000_window1000.tsv", 
                   "../figures/Fig3/fig-palindrome-depletion-k6.pdf",
                   6)
 makeDepletionPlot("../data/zenodo/seq_stats/avg_8_step1000_window1000.tsv", 
-                  "../figures/Fig3/figS2-palindrome-depletion-k8.pdf",
+                  "../figures/Supp/figS3-palindrome-depletion-k8.pdf",
                   8)

@@ -12,7 +12,7 @@ d = read.csv('../data/zenodo/palindrome_density.tsv', header=T, sep='\t')
 d$PTU = plasmid_table[d$contig,"PTU"]
 
 d$start.factor.kb = as.factor(d$start/1000)
-pdf('../figures/Supp/figS4-palindrome-density-einverted.pdf', width=8, height=6)
+pdf('../figures/Supp/figS5-palindrome-density-einverted.pdf', width=8, height=6)
 ggplot(d[which(d$start<50000),], 
        aes(start.factor.kb, count))+
   geom_boxplot()+facet_wrap(~PTU, scales="free_y")+
