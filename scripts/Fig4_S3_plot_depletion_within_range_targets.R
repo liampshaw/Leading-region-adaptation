@@ -88,4 +88,4 @@ p.average.score.per.target = ggplot(scores_average_k6_means, aes(kmer, mean))+
   xlab("6-bp RM target")+
   ylab("Mean difference in representation score across all plasmids\n (leading 10kb vs. lagging 10kb)")+
   coord_flip()
-ggsave(file="../figures/Supp/FigS3-within-range-targets.pdf", width=8, height=8, p.average.score.per.target)
+ggsave(file="../figures/Supp/FigS4-within-range-targets.pdf", width=8, height=8, p.average.score.per.target)
