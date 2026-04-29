@@ -304,7 +304,7 @@ medians <- cai.combined %>%
 pd <- position_dodge2(width = 0.75, preserve = "single")
 
 # Ecoli K-12 optimal gene set CAIs
-ecoli.optimal.set.of.genes = read.csv('../data/Ecoli-K12-optimal-weights.txt', header=F)
+ecoli.optimal.set.of.genes = read.csv('../data/Ecoli-K12-optimal-gene-CAIs.txt', header=F)
 colnames(ecoli.optimal.set.of.genes) = "cai"
 ecoli.optimal.set.of.genes$activity = " Highly expressed\nchromosomal genes"
 ecoli.optimal.set.of.genes$type.for.plot = "Unknown"
