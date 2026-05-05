@@ -6,7 +6,7 @@ A repository of analysis related to the paper:
 Liam P. Shaw, Arancha Peñil Celis, Manuel Ares Arroyo, Lijuan Luo, Tatiana Dimitriu, Fernando de la Cruz  
 doi: [short_text](url) 
 
-Associated datasets can be downloaded at Zenodo: [short_text](url)
+Associated datasets can be downloaded at Zenodo: [doi:10.5281/zenodo.20040901](https://doi.org/10.5281/zenodo.20040901)
 
 **A note on versions.** This repository supersedes an earlier repository associated with a previous iteration of this work, whose code is archived [here](https://github.com/liampshaw/RM-and-leading-region) (Zenodo doi: [10.5281/zenodo.15235227](https://doi.org/10.5281/zenodo.15235227)). That repository corresponds to v1 of the preprint and is preserved as a record of the previous analysis for clarity.
 
@@ -20,5 +20,5 @@ Associated datasets can be downloaded at Zenodo: [short_text](url)
 **`data/`**
 * `TableS1_` corresponds to Table S1 of the paper etc. 
 * A few other miscellaneous small files are included
-* Larger datasets that are needed to remake the figures can be downloaded from zenodo [here]() and should then be placed in a `data/zenodo` directory before running the figure scripts. 
+* Larger datasets that are needed to remake the figures can be downloaded from zenodo [doi:10.5281/zenodo.20040901](https://doi.org/10.5281/zenodo.20040901) and should then be placed in a `data/zenodo` directory before running the figure scripts. 
 
