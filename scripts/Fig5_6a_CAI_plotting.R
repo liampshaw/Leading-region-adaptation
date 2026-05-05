@@ -323,4 +323,3 @@ p.fig.6a.antidefense.types = ggplot(cai.combined, aes(activity, group=type.for.p
   labs(fill="Category")
 ggsave(p.fig.6a.antidefense.types, file='../figures/Fig6/figure6a-2026-gene-types.pdf', 
        width=6, height=4)
-
