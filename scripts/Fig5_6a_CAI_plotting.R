@@ -56,6 +56,25 @@ ggplot(cai.ptu %>% filter(position <= percentile), aes(position, mean.cai))+
   theme(panel.grid=element_blank())
 dev.off()
 
+
+# Correlation between CAI and GC content
+gc = read.csv('data/plasmid_gene_GC_content.csv', header=T)
+cai = merge(cai, gc, by="gene_id")
+png('../figures/Supp/figS6_CAI-GC.png', width = 24, height=8, unit="cm", res = 600)
+p.a = ggplot(cai, aes(gc, cai))+
+  geom_point(alpha=0.3)+theme_bw()+xlab("GC content")+ylab("CAI")+
+  stat_smooth(method="lm", colour="red")+
+  ggtitle("(a)")
+p.b = ggplot(cai, aes(gc, cai)) +
+  geom_hex() +
+  theme_bw() +
+  xlab("GC content") +
+  ylab("CAI") +
+  stat_smooth(method = "lm", colour="red")+coord_fixed()+
+  ggtitle("(b)")
+cowplot::plot_grid(p.a, p.b, nrow=1)
+dev.off()
+
 plotCAI = function(df){
   return(ggplot(df, aes(position, mean.cai))+
            geom_point(size=1, aes(colour=mean.cai))+
