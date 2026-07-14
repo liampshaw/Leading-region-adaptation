@@ -75,6 +75,19 @@ p.b = ggplot(cai, aes(gc, cai)) +
 cowplot::plot_grid(p.a, p.b, nrow=1)
 dev.off()
 
+p.GC.CAI.F = ggplot(cai[which(cai$position<10 & cai$PTU %in% c("PTU-E81", "PTU-E84", "PTU-FE", "PTU-FS", "PTU-N1")),], aes(gc, cai))+geom_point()+facet_wrap(~PTU)+stat_smooth(method="lm")+theme_bw()+xlab("GC")+ylab("CAI")
+p.GC.CAI.P = ggplot(cai[which(cai$position<10 & cai$PTU %in% c("PTU-BOKZ", "PTU-I1", "PTU-I2", "PTU-LM", "PTU-X1", "PTU-X3")),], aes(gc, cai))+geom_point()+facet_wrap(~PTU)+stat_smooth(method="lm")+theme_bw()+xlab("GC")+ylab("CAI")
+df.H <- cai[cai$PTU %in% c("PTU-C", "PTU-HI1A"), ]
+# Make sure the faceting variable includes a third level for the missing panel
+df.H$PTU <- factor(df.H$PTU, levels = c("PTU-C", "PTU-HI1A", "MISSING", "MISSING2", "MISSING3", "MISSING4"))
+p.GC.CAI.H <- ggplot(df.H[which(df.H$position<10),], aes(gc, cai))+geom_point()+
+  facet_wrap(~PTU, drop = FALSE, scales="free_x")+
+  stat_smooth(method="lm")+theme_bw()+xlab("GC")+ylab("CAI")
+pdf('../figures/Supp/figS7_CAI-GC_by_plasmid.pdf',width=12, height=4)
+cowplot::plot_grid(p.GC.CAI.F+ggtitle("(a) MOB-F"), 
+                   p.GC.CAI.P+ggtitle("(b) MOB-P"), 
+                   p.GC.CAI.H+ggtitle("(c) MOB-H"), nrow=1)
+dev.off()
 plotCAI = function(df){
   return(ggplot(df, aes(position, mean.cai))+
            geom_point(size=1, aes(colour=mean.cai))+
@@ -94,7 +107,7 @@ empty_plot <- ggplot() +
 cai.ptu.plot = cai.ptu[which(cai.ptu$position<100),]
 p.F.1 = plotCAI(cai.ptu.plot[which(cai.ptu.plot$PTU %in% c("PTU-E81", "PTU-E84", "PTU-FE")),]) +
   theme(legend.position = "none")
-p.F.2 = plotCAI(cai.ptu.plot[which(cai.ptu.plot$PTU %in% c("PTU-FE", "PTU-N1")),]) +
+p.F.2 = plotCAI(cai.ptu.plot[which(cai.ptu.plot$PTU %in% c("PTU-FS", "PTU-N1")),]) +
   theme(legend.position = "none")
 p.P.1 = plotCAI(cai.ptu.plot[which(cai.ptu.plot$PTU %in% c("PTU-BOKZ", "PTU-I1", "PTU-I2")),]) +
   theme(legend.position = "none")+
